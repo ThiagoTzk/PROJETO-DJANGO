@@ -1,65 +1,16 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locação de Quartos Universitários</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-</head>
-<body class="d-flex flex-column min-vh-100"> 
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <a class="navbar-brand" href="{% url 'home' %}">Locação de Imóveis</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="{% url 'quartos' %}">Quartos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contato</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link d-flex align-items-center" href="#">
-                  <span class="me-2">Conta</span> 
-                  <i class="bi bi-person-circle"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-    </nav>
 
-    <main class="container text-center mt-5 flex-grow-1 d-flex flex-column align-items-center justify-content-center"> 
-        <div class="card p-4 shadow-lg border rounded" style="max-width: 700px;">
-            <h2>Sobre o Site</h2>
-            <p class="lead">
-                Este site oferece uma plataforma fácil e prática para locação de quartos universitários. 
-                Encontre o quarto perfeito para sua estadia acadêmica, com opções em diversas localidades. 
-                Nossa missão é proporcionar conforto e praticidade para você, estudante universitário!
-            </p>
-            <a href="{% url 'quartos' %}" class="btn btn-primary btn-lg">Explorar Quartos</a>
-        </div>
-    </main>
-
-    <footer class="bg-dark text-light text-center py-3 mt-auto"> 
-        <p>&copy; 2025 Locação de Imóveis Universitários</p>
-    </footer>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/responsive.js' %}"></script>
-</body>
-</html>
+{% block content %}
+<main class="container text-center mt-5 flex-grow-1 d-flex flex-column align-items-center justify-content-center"> 
+    <div class="card p-4 shadow-lg border rounded" style="max-width: 700px;">
+        <h2>Sobre o Site</h2>
+        <p class="lead">
+            Este site oferece uma plataforma fácil e prática para locação de quartos universitários. 
+            Encontre o quarto perfeito para sua estadia acadêmica, com opções em diversas localidades. 
+            Nossa missão é proporcionar conforto e praticidade para você, estudante universitário!
+        </p>
+        <a href="{% url 'quartos' %}" class="btn btn-primary btn-lg">Explorar Quartos</a>
+    </div>
+</main>
+{% endblock %}
