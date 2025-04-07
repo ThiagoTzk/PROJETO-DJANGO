@@ -13,8 +13,20 @@
             <p class="text-muted"><i class="bi bi-calendar"></i> Disponível: {{ quarto.dates }}</p>
             <h3 class="text-success fw-bold">{{ quarto.price }}</h3>
             <p class="lead">{{ quarto.description }}</p>
+
+            <!-- Informações do Locatário -->
+            <div class="d-flex align-items-center border p-3 rounded shadow-sm mt-4">
+                <img src="{% static quarto.locatario.foto %}" alt="Foto do Locatário" class="rounded-circle me-3" width="60" height="60">
+                <div>
+                    <h5 class="mb-1">{{ quarto.locatario.nome }}</h5>
+                    <p class="mb-0 text-muted"><i class="bi bi-envelope"></i> {{ quarto.locatario.email }}</p>
+                    <p class="mb-0 text-muted"><i class="bi bi-telephone"></i> {{ quarto.locatario.telefone }}</p>
+                </div>
+            </div>
+
+            <!-- Botão -->
             <button class="btn btn-primary btn-lg mt-3">
-                <i class="bi bi-cart-check"></i> Alugar Agora
+                <i class="bi bi-chat-dots"></i> Contatar Locatario
             </button>
         </div>
     </div>

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 def home_view(request):
+    return render(request, "home/home.html")
+
+def quartos_view(request):
     rooms = [
         {
             "image": "img/quarto1.jpg",
@@ -23,30 +26,9 @@ def home_view(request):
             "dates": "12 – 18 de jun.",
             "price": "R$1.299",
         },
-        {
-            "image": "img/quarto4.jpg",
-            "title": "Maceió, Brasil",
-            "location": "Ponta Verde",
-            "dates": "20 – 25 de ago.",
-            "price": "R$750",
-        },
-        {
-            "image": "img/quarto5.jpg",
-            "title": "Maceió, Brasil",
-            "location": "Centro",
-            "dates": "3 – 8 de set.",
-            "price": "R$990",
-        },
-        {
-            "image": "img/quarto6.jpg",
-            "title": "Maceió, Brasil",
-            "location": "Praia de Cruz das Almas",
-            "dates": "15 – 20 de nov.",
-            "price": "R$1.100",
-        }
     ]
 
-    return render(request, "home/home.html", {"rooms": rooms})
+    return render(request, "quartos/listagem_quartos.html", {"rooms": rooms})
 
 def quartos_detalhes(request):
     quarto = {
@@ -56,6 +38,12 @@ def quartos_detalhes(request):
         "dates": "9 – 14 de mar.",
         "price": "R$1.149",
         "description": "Quarto aconchegante com vista para o mar.",
+        "locatario": {
+            "foto": "img/locatario.jpg",
+            "nome": "João Silva",
+            "email": "joao.silva@hotmail.com",
+            "telefone": "(82) 91234-5678"
+        }
     }
 
     return render(request, "quartos/quartos_detalhes.html", {"quarto": quarto})
