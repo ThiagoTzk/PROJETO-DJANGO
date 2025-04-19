@@ -21,7 +21,7 @@ def cadastrar_usuario(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)  # Usando o alias
+            auth_login(request, user)
             messages.success(request, 'Cadastro realizado com sucesso!')
             return redirect('home')
     else:

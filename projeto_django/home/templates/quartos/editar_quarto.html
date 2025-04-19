@@ -12,7 +12,6 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <!-- Campo de Imagem com Preview -->
                 <div class="mb-4">
                     <label class="form-label">Imagem Atual:</label>
                     <div class="current-image mb-3">
@@ -25,7 +24,6 @@
                     {{ form.imagem }}
                 </div>
 
-                <!-- Demais Campos -->
                 <div class="row g-3">
                     <div class="col-md-12">
                         <label class="form-label">Título</label>
