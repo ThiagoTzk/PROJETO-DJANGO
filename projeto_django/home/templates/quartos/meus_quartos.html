@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meus Quartos{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Meus Quartos</h2>
+    
+    {% if rooms %}
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <a href="{% url 'quartos_detalhes' room.id %}" class="text-decoration-none text-dark">
+                            {% if room.imagem %}
+                                <img src="{{ room.imagem.url }}" class="card-img-top" alt="Imagem do quarto" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/placeholder.jpg' %}" class="card-img-top" alt="Imagem genérica" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ room.titulo }}</h5>
+                                <p class="card-text">{{ room.descricao|truncatechars:100 }}</p>
+                                <p class="mb-0"><strong>Preço:</strong> R$ {{ room.preco }}</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Botão de Edição -->
+                        <div class="card-footer bg-white border-top-0">
+                            <div class="d-grid">
+                                <a href="{% url 'editar_quarto' room.id %}" class="btn btn-outline-warning btn-sm">
+                                    <i class="bi bi-pencil me-2"></i>Editar Quarto
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Nenhum quarto cadastrado!</h4>
+            <p>Você ainda não cadastrou nenhum quarto. Clique no botão abaixo para começar:</p>
+            <hr>
+            <a href="{% url 'criar_quarto' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Cadastrar Primeiro Quarto
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

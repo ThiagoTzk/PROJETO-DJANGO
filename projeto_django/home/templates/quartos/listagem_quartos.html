@@ -1,25 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Quartos Disponíveis{% endblock %}
+
 {% block content %}
-<div class="container">
-  <h1 class="pt-3">Quartos Disponíveis</h1>
-  <div class="row">
-      {% for room in rooms %}
-      <div class="col-md-4 pt-3">
-          <div class="card">
-              <img src="{% static room.image %}" class="card-img-top" alt="{{ room.title }}">
-              <div class="card-body">
-                  <span class="badge bg-primary">Preferido dos hóspedes</span>
-                  <h5 class="card-title">{{ room.title }}</h5>
-                  <p class="text-muted">{{ room.location }}</p>
-                  <p class="text-muted">{{ room.dates }}</p>
-                  <h6 class="text-muted">{{ room.price }} / noite</h6>
-                  <a href="{% url 'quartos_detalhes' %}" class="btn btn-primary">Ver Detalhes</a> 
-              </div>
-          </div>
-      </div>
-      {% endfor %}
-  </div>
+<h2 class="mb-4">Quartos Disponíveis</h2>
+
+<div class="row">
+    {% for room in rooms %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'quartos_detalhes' room.id %}" class="text-decoration-none">
+                    {% if room.imagem %}
+                        <img src="{{ room.imagem.url }}" class="card-img-top" alt="Imagem do quarto">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.jpg' %}" class="card-img-top" alt="Imagem genérica">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ room.titulo }}</h5>
+                        <p class="card-text">{{ room.descricao|truncatechars:100 }}</p>
+                        <p><strong>Endereço:</strong> {{ room.endereco }}</p>
+                        <p><strong>Preço:</strong> R$ {{ room.preco }}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>Nenhum quarto cadastrado ainda.</p>
+    {% endfor %}
 </div>
 {% endblock %}

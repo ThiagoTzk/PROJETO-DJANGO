@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Quarto - {{ quarto.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Editar Quarto</h2>
+    
+    <div class="card shadow">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Campo de Imagem com Preview -->
+                <div class="mb-4">
+                    <label class="form-label">Imagem Atual:</label>
+                    <div class="current-image mb-3">
+                        {% if quarto.imagem %}
+                            <img src="{{ quarto.imagem.url }}" class="img-fluid rounded" style="max-height: 200px">
+                        {% else %}
+                            <img src="{% static 'img/placeholder.jpg' %}" class="img-fluid rounded" style="max-height: 200px">
+                        {% endif %}
+                    </div>
+                    {{ form.imagem }}
+                </div>
+
+                <!-- Demais Campos -->
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Título</label>
+                        {{ form.titulo }}
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <label class="form-label">Descrição</label>
+                        {{ form.descricao }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Endereço</label>
+                        {{ form.endereco }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Preço</label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            {{ form.preco }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{% url 'meus_quartos' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

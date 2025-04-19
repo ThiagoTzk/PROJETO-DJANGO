@@ -1,34 +1,42 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static %}  <!-- Carrega a tag static -->
 
 {% block content %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
-            <img src="{% static quarto.image %}" class="img-fluid rounded shadow" alt="{{ quarto.title }}">
+            {% if quarto.imagem %}
+                <img src="{{ quarto.imagem.url }}" class="img-fluid rounded shadow" alt="{{ quarto.titulo }}">
+            {% else %}
+                <img src="{% static 'img/placeholder.jpg' %}" class="img-fluid rounded shadow" alt="Sem imagem">
+            {% endif %}
         </div>
         <div class="col-md-6">
-            <h2 class="fw-bold">{{ quarto.title }}</h2>
-            <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ quarto.location }}</p>
-            <p class="text-muted"><i class="bi bi-calendar"></i> Disponível: {{ quarto.dates }}</p>
-            <h3 class="text-success fw-bold">{{ quarto.price }}</h3>
-            <p class="lead">{{ quarto.description }}</p>
+            <h2 class="fw-bold">{{ quarto.titulo }}</h2>
+            <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ quarto.endereco }}</p>
+            <h3 class="text-success fw-bold">R$ {{ quarto.preco }}</h3>
+            <p class="lead">{{ quarto.descricao }}</p>
 
-            <!-- Informações do Locatário -->
-            <div class="d-flex align-items-center border p-3 rounded shadow-sm mt-4">
-                <img src="{% static quarto.locatario.foto %}" alt="Foto do Locatário" class="rounded-circle me-3" width="60" height="60">
-                <div>
-                    <h5 class="mb-1">{{ quarto.locatario.nome }}</h5>
-                    <p class="mb-0 text-muted"><i class="bi bi-envelope"></i> {{ quarto.locatario.email }}</p>
-                    <p class="mb-0 text-muted"><i class="bi bi-telephone"></i> {{ quarto.locatario.telefone }}</p>
+            <!-- Seção do Proprietário -->
+            <div class="card border-primary mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-person-circle"></i> Informações do Locador</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Nome:</strong> {{ quarto.proprietario.username }}<br>
+                        <strong>Email:</strong> 
+                        {% if quarto.proprietario.email %}
+                            {{ quarto.proprietario.email }}
+                        {% else %}
+                            (Email não cadastrado)
+                        {% endif %}
+                    </p>
+                    <a href="mailto:{{ quarto.proprietario.email }}" class="btn btn-primary">
+                        <i class="bi bi-envelope"></i> Contatar via Email
+                    </a>
                 </div>
             </div>
-
-            <!-- Botão -->
-            <button class="btn btn-primary btn-lg mt-3">
-                <i class="bi bi-chat-dots"></i> Contatar Locatario
-            </button>
-            
         </div>
     </div>
 </div>
