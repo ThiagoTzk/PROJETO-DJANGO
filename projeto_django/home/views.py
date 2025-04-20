@@ -85,3 +85,14 @@ def editar_quarto(request, quarto_id):
         form = QuartoForm(instance=quarto)
     
     return render(request, 'quartos/editar_quarto.html', {'form': form, 'quarto': quarto})
+
+@login_required
+def excluir_quarto(request, quarto_id):
+    quarto = get_object_or_404(Quarto, id=quarto_id, proprietario=request.user)
+    
+    if request.method == 'POST':
+        quarto.delete()
+        messages.success(request, 'Quarto excluído com sucesso!')
+        return redirect('meus_quartos')
+    
+    return redirect('meus_quartos')

@@ -25,11 +25,22 @@
                             </div>
                         </a>
                         
+                        <!-- Área dos botões de ação -->
                         <div class="card-footer bg-white border-top-0">
-                            <div class="d-grid">
+                            <div class="d-flex justify-content-between">
+                                <!-- Botão Editar -->
                                 <a href="{% url 'editar_quarto' room.id %}" class="btn btn-outline-warning btn-sm">
-                                    <i class="bi bi-pencil me-2"></i>Editar Quarto
+                                    <i class="bi bi-pencil me-2"></i>Editar
                                 </a>
+                                
+                                <!-- Botão Excluir -->
+                                <form method="post" action="{% url 'excluir_quarto' room.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" 
+                                            onclick="return confirm('Tem certeza que deseja excluir permanentemente este quarto?')">
+                                        <i class="bi bi-trash me-2"></i>Excluir
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

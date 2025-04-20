@@ -15,6 +15,7 @@ urlpatterns = [
     path('logout/', views.logout_usuario, name='logout'),
     path('meus-quartos/', views.meus_quartos, name='meus_quartos'),
     path('editar-quarto/<int:quarto_id>/', views.editar_quarto, name='editar_quarto'),
+    path('excluir-quarto/<int:quarto_id>/', views.excluir_quarto, name='excluir_quarto'),
 ]
 
 if settings.DEBUG:
