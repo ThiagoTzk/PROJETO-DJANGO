@@ -21,7 +21,6 @@
                 <div class="card-body">
                     <form method="POST">
                         {% csrf_token %}
-                        <!-- Campo oculto para preservar o parâmetro next -->
                         <input type="hidden" name="next" value="{{ next }}">
                         
                         <div class="mb-3">
