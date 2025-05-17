@@ -2,12 +2,45 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Cadastrar Novo Quarto</h2>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary mt-3">Salvar Quarto</button>
-    </form>
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="bi bi-house-add"></i> Cadastrar Novo Quarto</h3>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        {{ form.titulo|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.preco|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.descricao|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.endereco|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.data_disponivel|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.imagem|as_crispy_field }}
+                        <small class="form-text text-muted">Formatos aceitos: JPG, PNG (Máx. 5MB)</small>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-save"></i> Salvar Quarto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

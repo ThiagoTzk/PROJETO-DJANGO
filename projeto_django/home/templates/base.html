@@ -34,19 +34,23 @@
                             <i class="bi bi-building"></i> Quartos
                         </a>
                     </li>
+                    {% if user.is_authenticated and user.user_type == 'Locador' %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/meus-quartos/' %}active{% endif %}" 
-                           href="{% if user.is_authenticated %}{% url 'meus_quartos' %}{% else %}{% url 'login' %}?next={% url 'meus_quartos' %}{% endif %}">
+                           href="{% url 'meus_quartos' %}">
                             <i class="bi bi-house-heart"></i> Meus Quartos
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
                 
                 <div class="d-flex gap-2">
-                    <a href="{% if user.is_authenticated %}{% url 'criar_quarto' %}{% else %}{% url 'login' %}?next={% url 'criar_quarto' %}{% endif %}" 
+                    {% if user.is_authenticated and user.user_type == 'Locador' %}
+                    <a href="{% url 'criar_quarto' %}" 
                        class="btn btn-success">
                         <i class="bi bi-house-add"></i> Cadastrar Quarto
                     </a>
+                    {% endif %}
 
                     {% if user.is_authenticated %}
                         <a href="{% url 'logout' %}" class="btn btn-outline-light">

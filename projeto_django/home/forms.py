@@ -1,39 +1,81 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario, Quarto
+from .models import Usuario, Quarto 
 
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'exemplo@email.com'})
+    USER_TYPE_CHOICES = [
+        ('Locador', 'Sou Proprietário'),
+        ('Locatario', 'Sou Estudante'),
+    ]
+    
+    user_type = forms.ChoiceField(
+        label="Tipo de Conta",
+        choices=USER_TYPE_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        initial='Locatario'
     )
-    telefone = forms.CharField(
-        max_length=20,
+    
+    faculdade = forms.CharField(
+        label='Faculdade/Universidade',
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(99) 99999-9999'})
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    curso = forms.CharField(
+        label='Curso',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    matricula = forms.CharField(
+        label='Número de Matrícula',
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'telefone', 'password1', 'password2']
+        fields = [
+            'username', 'email', 'telefone', 'user_type',
+            'faculdade', 'curso', 'matricula', 'password1', 'password2'
+        ]
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Nome de usuário'})
-        self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Senha'})
-        self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirme a senha'})
-
+    def clean(self):
+        cleaned_data = super().clean()
+        user_type = cleaned_data.get('user_type')
+        
+        if user_type == 'Locatario':
+            campos_obrigatorios = {
+                'faculdade': 'Informe sua faculdade',
+                'curso': 'Informe seu curso',
+                'matricula': 'Informe sua matrícula'
+            }
+            
+            for campo, mensagem in campos_obrigatorios.items():
+                if not cleaned_data.get(campo):
+                    self.add_error(campo, mensagem)
+        return cleaned_data
+    
 class QuartoForm(forms.ModelForm):
     class Meta:
         model = Quarto
-        fields = ['titulo', 'descricao', 'endereco', 'preco', 'imagem']
+        fields = ['titulo', 'descricao', 'endereco', 'preco', 'imagem', 'data_disponivel']
+        
         widgets = {
-            'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Quarto aconchegante com vista para o mar'}),
-            'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Descreva detalhes do quarto...'}),
-            'endereco': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Rua Exemplo, 123 - Cidade/Estado'}),
-            'preco': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'descricao': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Descreva detalhes do quarto...'
+            }),
+            'endereco': forms.TextInput(attrs={'class': 'form-control'}),
+            'preco': forms.NumberInput(attrs={'class': 'form-control'}),
             'imagem': forms.FileInput(attrs={'class': 'form-control'}),
+            'data_disponivel': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control'
+            })
         }
+        
         labels = {
+            'data_disponivel': 'Data Disponível',
             'imagem': 'Foto do Quarto'
         }

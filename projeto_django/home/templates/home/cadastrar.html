@@ -4,18 +4,53 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h3 class="mb-0">Cadastro de Usuário</h3>
                 </div>
                 
                 <div class="card-body">
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         
-                        {{ form|crispy }}
-                        
+                        <!-- Seção Tipo de Usuário -->
+                        <div class="mb-4">
+                            <h5>Tipo de Conta</h5>
+                            <div class="d-flex gap-4">
+                                {% for radio in form.user_type %}
+                                    <div class="form-check">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label" for="{{ radio.id_for_label }}">
+                                            {{ radio.choice_label }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if form.user_type.errors %}
+                                <div class="text-danger mt-2">{{ form.user_type.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Campos Principais -->
+                        {{ form.username|as_crispy_field }}
+                        {{ form.email|as_crispy_field }}
+                        {{ form.telefone|as_crispy_field }}
+
+                        <!-- Seção Estudante -->
+                        <div id="locatario-fields" style="display: none;">
+                            <h5 class="mt-4 mb-3">Dados Acadêmicos</h5>
+                            <div class="academic-fields">
+                                {{ form.faculdade|as_crispy_field }}
+                                {{ form.curso|as_crispy_field }}
+                                {{ form.matricula|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <!-- Senhas -->
+                        {{ form.password1|as_crispy_field }}
+                        {{ form.password2|as_crispy_field }}
+
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="bi bi-person-plus"></i> Cadastrar
@@ -31,18 +66,66 @@
                     </a>
                 </div>
             </div>
-
-            {% if messages %}
-                <div class="mt-3">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const userTypeRadios = document.querySelectorAll('input[name="user_type"]');
+    const locatarioFields = document.getElementById('locatario-fields');
+    const academicFields = locatarioFields.querySelectorAll('.academic-fields input');
+
+    function toggleFields() {
+        const isLocatario = document.querySelector('input[name="user_type"]:checked').value === 'Locatario';
+        
+        // Mostra/oculta os campos
+        locatarioFields.style.display = isLocatario ? 'block' : 'none';
+        
+        // Atualiza atributos required
+        academicFields.forEach(field => {
+            field.required = isLocatario;
+            field.disabled = !isLocatario;
+        });
+    }
+
+    userTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleFields);
+    });
+
+    // Atualiza estado inicial
+    toggleFields();
+    
+    // Validação ao enviar o formulário
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const isLocatario = document.querySelector('input[name="user_type"]:checked').value === 'Locatario';
+        let isValid = true;
+
+        if(isLocatario) {
+            academicFields.forEach(field => {
+                if(!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                }
+            });
+        }
+
+        if(!isValid) {
+            e.preventDefault();
+            alert('Por favor, preencha todos os campos obrigatórios para estudantes!');
+        }
+    });
+});
+</script>
+
+<style>
+.academic-fields .is-invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+</style>
 {% endblock %}
