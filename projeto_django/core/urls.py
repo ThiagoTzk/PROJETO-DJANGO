@@ -23,6 +23,10 @@ urlpatterns = [
     path('quartos/meus/', views.meus_quartos, name='meus_quartos'),
     path('quartos/editar/<int:quarto_id>/', views.editar_quarto, name='editar_quarto'),
     path('quartos/excluir/<int:quarto_id>/', views.excluir_quarto, name='excluir_quarto'),
+    
+    # Pefil
+    path('perfil/', views.perfil, name='perfil'),
+    path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
 ]
 
 if settings.DEBUG:

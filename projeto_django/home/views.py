@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from .models import Quarto
-from .forms import UserRegistrationForm, QuartoForm
+from .models import Quarto, Usuario
+from .forms import UserRegistrationForm, QuartoForm, ProfileForm
 
 def home_view(request):
     return render(request, 'home/home.html')
@@ -96,3 +96,20 @@ def excluir_quarto(request, quarto_id):
         return redirect('meus_quartos')
     
     return redirect('meus_quartos')
+
+@login_required
+def perfil(request):
+    return render(request, 'perfil/perfil.html', {'usuario': request.user})
+
+@login_required
+def editar_perfil(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            return redirect('perfil')
+    else:
+        form = ProfileForm(instance=request.user)
+    
+    return render(request, 'perfil/editar_perfil.html', {'form': form})

@@ -16,6 +16,13 @@ class Usuario(AbstractUser):
     faculdade = models.CharField('Faculdade', max_length=100, blank=True)
     curso = models.CharField('Curso', max_length=100, blank=True)
     matricula = models.CharField('Matrícula', max_length=20, blank=True)
+    foto = models.ImageField(
+        'Foto de Perfil',
+        upload_to='perfil/',
+        blank=True,
+        null=True,
+        default='perfil/default.png'
+    )
     
     class Meta:
         verbose_name = 'Usuário'

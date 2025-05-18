@@ -4,36 +4,89 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
-            {% if quarto.imagem %}
-                <img src="{{ quarto.imagem.url }}" class="img-fluid rounded shadow" alt="{{ quarto.titulo }}">
-            {% else %}
-                <img src="{% static 'img/placeholder.jpg' %}" class="img-fluid rounded shadow" alt="Sem imagem">
-            {% endif %}
+        <div class="col-md-8">
+            <div class="card shadow-lg mb-4">
+                {% if quarto.imagem %}
+                    <img src="{{ quarto.imagem.url }}" class="card-img-top img-fluid" alt="{{ quarto.titulo }}">
+                {% else %}
+                    <img src="{% static 'img/placeholder.jpg' %}" class="card-img-top img-fluid" alt="Sem imagem">
+                {% endif %}
+                <div class="card-body">
+                    <h1 class="card-title display-4">{{ quarto.titulo }}</h1>
+                    <p class="text-muted lead">
+                        <i class="bi bi-geo-alt"></i> {{ quarto.endereco }}
+                    </p>
+                    <div class="bg-light p-4 rounded-3 mb-4">
+                        <h2 class="text-success fw-bold">R$ {{ quarto.preco|floatformat:2 }}</h2>
+                        <p class="text-muted mb-0">Disponível a partir de {{ quarto.data_disponivel|date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="h4">Descrição do Quarto</h3>
+                        <p class="lead">{{ quarto.descricao }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <h2 class="fw-bold">{{ quarto.titulo }}</h2>
-            <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ quarto.endereco }}</p>
-            <h3 class="text-success fw-bold">R$ {{ quarto.preco }}</h3>
-            <p class="lead">{{ quarto.descricao }}</p>
-
-            <div class="card border-primary mt-4">
+        
+        <div class="col-md-4">
+            <div class="card border-primary shadow-lg">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="bi bi-person-circle"></i> Informações do Locador</h5>
+                    <h5 class="mb-0"><i class="bi bi-person-circle"></i> Locador</h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">
-                        <strong>Nome:</strong> {{ quarto.proprietario.username }}<br>
-                        <strong>Email:</strong> 
-                        {% if quarto.proprietario.email %}
-                            {{ quarto.proprietario.email }}
-                        {% else %}
-                            (Email não cadastrado)
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <img src="{{ quarto.proprietario.foto.url }}" 
+                             class="rounded-circle shadow-sm" 
+                             style="width: 80px; height: 80px; object-fit: cover;"
+                             alt="Foto do locador">
+                        <div>
+                            <p class="h5 mb-1">{{ quarto.proprietario.get_full_name }}</p>
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                Membro desde {{ quarto.proprietario.date_joined|date:"m/Y" }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted small">Contato</h6>
+                        <ul class="list-unstyled">
+                            {% if quarto.proprietario.telefone %}
+                            <li class="mb-2">
+                                <i class="bi bi-telephone me-2"></i>
+                                {{ quarto.proprietario.telefone }}
+                            </li>
+                            {% endif %}
+                            {% if quarto.proprietario.email %}
+                            <li>
+                                <i class="bi bi-envelope me-2"></i>
+                                {{ quarto.proprietario.email }}
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if quarto.proprietario.telefone %}
+                        <a href="tel:{{ quarto.proprietario.telefone }}" class="btn btn-outline-primary">
+                            <i class="bi bi-telephone"></i> Ligar
+                        </a>
                         {% endif %}
-                    </p>
-                    <a href="mailto:{{ quarto.proprietario.email }}" class="btn btn-primary">
-                        <i class="bi bi-envelope"></i> Contatar via Email
-                    </a>
+                        
+                        {% if quarto.proprietario.email %}
+                            {% if user.is_authenticated %}
+                                <a href="mailto:{{ quarto.proprietario.email|urlencode }}?subject=Interesse%20no%20quarto%20{{ quarto.titulo|urlencode }}&body=Olá%20{{ quarto.proprietario.first_name|urlencode }}!%0D%0A%0D%0AEu%20sou%20{{ user.get_full_name|urlencode }}%20({{ user.email|urlencode }})%20e%20tenho%20interesse%20no%20seu%20quarto%20{{ quarto.titulo|urlencode }}.%0D%0A%0D%0APor%20favor,%20entre%20em%20contato%20comigo%20para%20mais%20detalhes.%0D%0A%0D%0AAtenciosamente,%0D%0A{{ user.get_full_name|urlencode }}" 
+                                   class="btn btn-primary">
+                                    <i class="bi bi-envelope"></i> Enviar Mensagem
+                                </a>
+                            {% else %}
+                                <a href="{% url 'login' %}?next={{ request.path|urlencode }}" 
+                                   class="btn btn-secondary">
+                                    <i class="bi bi-lock"></i> Faça login para enviar
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

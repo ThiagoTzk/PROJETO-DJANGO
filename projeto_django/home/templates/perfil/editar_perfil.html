@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Perfil</h3>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        <img src="{{ request.user.foto.url }}" 
+                             class="img-fluid rounded-circle mb-3" 
+                             style="width: 150px; height: 150px; object-fit: cover;"
+                             alt="Foto atual">
+                        {{ form.foto|as_crispy_field }}
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form.first_name|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.last_name|as_crispy_field }}</div>
+                            <div class="col-12">{{ form.email|as_crispy_field }}</div>
+                            <div class="col-12">{{ form.telefone|as_crispy_field }}</div>
+                            
+                            {% if request.user.user_type == 'Locatario' %}
+                            <div class="col-md-6">{{ form.faculdade|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.curso|as_crispy_field }}</div>
+                            <div class="col-12">{{ form.matricula|as_crispy_field }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

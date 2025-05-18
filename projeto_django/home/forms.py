@@ -79,3 +79,15 @@ class QuartoForm(forms.ModelForm):
             'data_disponivel': 'Data Disponível',
             'imagem': 'Foto do Quarto'
         }
+        
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['first_name', 'last_name', 'email', 'telefone', 'foto', 'faculdade', 'curso', 'matricula']
+        widgets = {
+            'foto': forms.FileInput(attrs={'class': 'form-control'}),
+            'telefone': forms.TextInput(attrs={'class': 'form-control'}),
+            'faculdade': forms.TextInput(attrs={'class': 'form-control'}),
+            'curso': forms.TextInput(attrs={'class': 'form-control'}),
+            'matricula': forms.TextInput(attrs={'class': 'form-control'}),
+        }
