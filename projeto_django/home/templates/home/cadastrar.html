@@ -14,7 +14,6 @@
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         
-                        <!-- Seção Tipo de Usuário -->
                         <div class="mb-4">
                             <h5>Tipo de Conta</h5>
                             <div class="d-flex gap-4">
@@ -32,12 +31,10 @@
                             {% endif %}
                         </div>
 
-                        <!-- Campos Principais -->
                         {{ form.username|as_crispy_field }}
                         {{ form.email|as_crispy_field }}
                         {{ form.telefone|as_crispy_field }}
 
-                        <!-- Seção Estudante -->
                         <div id="locatario-fields" style="display: none;">
                             <h5 class="mt-4 mb-3">Dados Acadêmicos</h5>
                             <div class="academic-fields">
@@ -47,7 +44,6 @@
                             </div>
                         </div>
 
-                        <!-- Senhas -->
                         {{ form.password1|as_crispy_field }}
                         {{ form.password2|as_crispy_field }}
 
@@ -79,10 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleFields() {
         const isLocatario = document.querySelector('input[name="user_type"]:checked').value === 'Locatario';
         
-        // Mostra/oculta os campos
         locatarioFields.style.display = isLocatario ? 'block' : 'none';
         
-        // Atualiza atributos required
         academicFields.forEach(field => {
             field.required = isLocatario;
             field.disabled = !isLocatario;
@@ -93,10 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
         radio.addEventListener('change', toggleFields);
     });
 
-    // Atualiza estado inicial
     toggleFields();
     
-    // Validação ao enviar o formulário
     document.querySelector('form').addEventListener('submit', function(e) {
         const isLocatario = document.querySelector('input[name="user_type"]:checked').value === 'Locatario';
         let isValid = true;
